@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -67,6 +66,9 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 
 const int DEBOUNCE = 200;
+volatile int TimeHasCome = 0;
+
+
 #define BUFFER_SIZE 6
 	
 uint8_t tx_buffer[BUFFER_SIZE];
@@ -126,9 +128,6 @@ int main(void)
   MX_RTC_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_USART2_UART_Init();
 	
 	tx_buffer[0] = 0xAA;
   tx_buffer[1] = 0xBB;
@@ -142,7 +141,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+		if (TimeHasCome == 1)
+		{
+			TimeHasCome = 0;
+		}
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -183,13 +185,14 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
