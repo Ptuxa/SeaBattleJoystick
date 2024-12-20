@@ -219,7 +219,7 @@ void EXTI0_IRQHandler(void)
 	{
 //		A3
 		
-		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, SHOOT_BTN_ID);
+		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, ROTATE_RIGHT_BTN_ID);
 
 		ms_last = ms_now;
 	}
@@ -243,7 +243,7 @@ void EXTI1_IRQHandler(void)
 	if (ms_now - ms_last > INTERRUPT_BOUNCING_TIME)
 	{
 //		A1
-		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, ROTATE_LEFT_BTN_ID);
+		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, SHOOT_BTN_ID);
 
 		ms_last = ms_now;
 	}
@@ -267,7 +267,7 @@ void EXTI4_IRQHandler(void)
 	if (ms_now - ms_last > INTERRUPT_BOUNCING_TIME)
 	{
 //		A2
-		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, ROTATE_RIGHT_BTN_ID);
+		transmit_int_pattern_uart(&huart2, PRESSED_BNT_ID_PATTERN, ROTATE_LEFT_BTN_ID);
 
 		
 		ms_last = ms_now;
